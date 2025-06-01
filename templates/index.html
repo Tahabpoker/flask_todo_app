@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Task Master</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+  <div class="content">
+    <h1>Task Master</h1>
+    
+    <!-- Add Task Form -->
+    <form action="/" method="POST" class="task-form">
+      <input type="text" name="content" id="content" placeholder="Add a new task..." aria-label="New task input">
+      <button type="submit" class="btn btn-add">Add Task</button>
+    </form>
+
+    <!-- Task Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Added</th>
+            <th class="actions-header">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+            <tr class="task-row">
+              <td>{{ task.content }}</td>
+              <td>{{ task.data_created.strftime('%b %d, %Y %I:%M %p') }}</td>
+              <td class="actions-cell">
+                <div class="action-buttons">
+                  <a href="/delete/{{ task.id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to complete this task?');">Complete</a>
+                  <a href="/update/{{ task.id }}" class="btn btn-update">Edit</a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          {% if not tasks %}
+            <tr>
+              <td colspan="3" class="no-tasks">No tasks yet. Add one above!</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('.task-form');
+      const input = document.querySelector('input[name="content"]');
+      form.addEventListener('submit', function(e) {
+        if (!input.value.trim()) {
+          e.preventDefault();
+          alert("Please enter a valid task.");
+          input.focus();
+        }
+      });
+    });
+  </script>
+{% endblock %}

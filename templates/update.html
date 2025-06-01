@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Update Task</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+  <div class="content">
+    <h1>Update Task</h1>
+    
+    <p class="old-task"><strong>Current Task:</strong> {{ task.content }}</p>
+
+    <form action="/update/{{ task.id }}" method="POST" class="task-form">
+      <input 
+        type="text" 
+        name="content" 
+        id="content" 
+        value="{{ task.content }}" 
+        placeholder="Enter new task content"
+        aria-label="Update task input"
+      >
+      <button type="submit" class="btn btn-update">Update Task</button>
+    </form>
+
+    <a href="/" class="btn btn-back">Back to Tasks</a>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.task-form');
+        const input = document.querySelector('input[name="content"]');
+        form.addEventListener('submit', function(e) {
+          if (!input.value.trim()) {
+            e.preventDefault();
+            alert("Please enter a valid task.");
+            input.focus();
+          }
+        });
+      });
+    </script>
+  </div>
+{% endblock %}
